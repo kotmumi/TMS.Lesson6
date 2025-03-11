@@ -97,3 +97,14 @@ studentList.forEach {
         print("\($0.name) has no grade")
     }
 }
+
+//*   findStudentsByAge(students: [Student], age: Int) -> [Student]: Функция должна принимать массив студентов и возраст, и возвращать новый массив, содержащий только студентов указанного возраста. Используйте функцию высшего порядка filter.
+
+func findStudentsByAge(students: [Student], age: Int) -> [Student] {
+    return students.filter { $0.age == age }
+}
+
+// MARK: -Test
+let student22AgeList = findStudentsByAge(students: studentList, age: 22)
+print("\nStudents 22 age:")
+student22AgeList.forEach { print("\($0.name) is \($0.age) years old") }
