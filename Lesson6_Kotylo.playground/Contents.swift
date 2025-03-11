@@ -123,7 +123,9 @@ student22AgeList.forEach { print("\($0.name) is \($0.age) years old") }
 func getTopStudents(students: [Student], top: Int) -> [(name: String, averageGrade: Double)] {
     let topStudent = students.sorted { calculateAverageGrade(student: $0) ?? 0 > calculateAverageGrade(student: $1) ?? 0 }.prefix(top)
     return topStudent.compactMap {
-        guard let averageGrade = calculateAverageGrade(student: $0) else { return nil }
+        guard let averageGrade = calculateAverageGrade(student: $0) else {
+            return nil
+        }
         return (name: $0.name, averageGrade: averageGrade)
     }
 }
@@ -152,3 +154,24 @@ uniqueOptionalSubjectsReduce.forEach { print($0) }
 print("\nUnique optional subjects : FlatMap")
 uniqueOptionalSubjectsFlatMap.forEach { print($0) }
 
+// MARK: -* Реализуйте функцию, которая будет находить студента с самым большим количеством посещаемых факультативов.
+
+func getStudentMaxCountOptSubjects(students: [Student]) -> [Student?] {
+    guard !students.isEmpty else {
+        return [nil]
+    }
+    
+    if let studentMaxOptSubject = students.max(by: { $0.optionalSubjects.count < $1.optionalSubjects.count }) {
+        let maxCountOptSubjects = studentMaxOptSubject.optionalSubjects.count
+        return students.filter({$0.optionalSubjects.count == maxCountOptSubjects})
+    } else {
+        return [nil]
+    }
+}
+
+// MARK: -Test
+
+print("\nStudent with max count optional subjects:")
+let studentMaxCountOptSubjects = getStudentMaxCountOptSubjects(students: studentList)
+studentMaxCountOptSubjects.forEach {
+    print("\($0?.name ?? "") \($0?.optionalSubjects.count ?? 0) optional subject") }
