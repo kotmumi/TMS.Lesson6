@@ -42,8 +42,10 @@ enum OptionalSubjects: String, CaseIterable {
 
 func randomGrades() -> [String: Double] {
     var grades: [String: Double] = [:]
-    for index in 0...Int.random(in: 1...6) {
-        grades[Subjects.allCases.randomElement()!.rawValue] = Double(Int.random(in: 2...10)) / 2.0
+    for index in 0...Int.random(in: 0...6) {
+        let randomGrade = Double(Int.random(in: 0...10)) / 2.0
+        grades[Subjects.allCases.randomElement()!.rawValue] = randomGrade == 0.0 ? nil : randomGrade
+        
     }
     return grades
 }
@@ -69,7 +71,7 @@ for i in 0...Int.random(in: 4...9) {
     studentList.append((studentName, age, randomGrades(), randomOptionalSubject()))
 }
 // MARK: -Test
-print("Общее количество студентов: \(studentList.count) \n ---------------------------")
+print("Total count students: \(studentList.count) \n ---------------------------")
 studentList.forEach() {
     print("Name: \($0.name)")
     print("Age: \($0.age)")
@@ -77,4 +79,21 @@ studentList.forEach() {
     print ("OptionalSubject: \($0.optionalSubjects)\n")
 }
 
+// MARK: -3.  Реализовать функции для обработки данных:
+//*   calculateAverageGrade(student: Student) -> Double?: Функция должна принимать кортеж студента и возвращать его средний балл по всем предметам. Если у студента нет оценок, функция должна вернуть nil.
 
+func calculateAverageGrade(student: Student) -> Double? {
+    guard !student.grades.isEmpty else {
+        return nil
+    }
+    return student.grades.values.reduce(0, +) / Double(student.grades.count)
+}
+
+// MARK: -Test
+studentList.forEach {
+    if let averageGrade = calculateAverageGrade(student: $0) {
+        print("Average grade for \($0.name) is: \(averageGrade)")
+    } else {
+        print("\($0.name) has no grade")
+    }
+}
