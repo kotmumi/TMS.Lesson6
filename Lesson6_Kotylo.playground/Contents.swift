@@ -38,6 +38,15 @@ enum OptionalSubjects: String, CaseIterable {
     case french = "French"
     case art = "Art"
     case computerScience = "Computer Science"
+    case languages = "Languages"
+    case sports = "Sports"
+    case cooking = "Cooking"
+    case swimming = "Swimming"
+    case dancing = "Dancing"
+    case coding = "Coding"
+    case photography = "Photography"
+    case codingBootcamp = "Coding Bootcamp"
+    case other = "Other"
 }
 
 func randomGrades() -> [String: Double] {
@@ -123,3 +132,23 @@ func getTopStudents(students: [Student], top: Int) -> [(name: String, averageGra
 let topStudents = getTopStudents(students: studentList, top: 3)
 print("\nTop 3 students by average grade:")
 topStudents.forEach { print("\($0.name) - average grade: \($0.averageGrade)") }
+
+//    *   getUniqueOptionalSubjects(students: [Student]) -> Set<String>:  Функция должна принимать массив студентов и возвращать множество, содержащее все уникальные названия факультативов, которые посещают студенты из массива. Используйте функцию высшего порядка reduce или flatMap.
+
+
+func getUniqueOptionalSubjectsReduce(students: [Student]) -> Set<String> {
+    return students.reduce(Set<String>()) {$0.union($1.optionalSubjects)}
+}
+
+func getUniqueOptionalSubjectsFlatMap(students: [Student]) -> Set<String> {
+    Set(students.flatMap(\.optionalSubjects))
+}
+
+// MARK: -Test
+let uniqueOptionalSubjectsReduce = getUniqueOptionalSubjectsReduce(students: studentList)
+let uniqueOptionalSubjectsFlatMap = getUniqueOptionalSubjectsFlatMap(students: studentList)
+print("\nUnique optional subjects : Reduce")
+uniqueOptionalSubjectsReduce.forEach { print($0) }
+print("\nUnique optional subjects : FlatMap")
+uniqueOptionalSubjectsFlatMap.forEach { print($0) }
+
