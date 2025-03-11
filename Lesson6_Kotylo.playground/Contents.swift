@@ -71,7 +71,7 @@ for i in 0...Int.random(in: 4...9) {
     studentList.append((studentName, age, randomGrades(), randomOptionalSubject()))
 }
 // MARK: -Test
-print("Total count students: \(studentList.count) \n ---------------------------")
+print("Total count students: \(studentList.count) \n")
 studentList.forEach() {
     print("Name: \($0.name)")
     print("Age: \($0.age)")
@@ -108,3 +108,18 @@ func findStudentsByAge(students: [Student], age: Int) -> [Student] {
 let student22AgeList = findStudentsByAge(students: studentList, age: 22)
 print("\nStudents 22 age:")
 student22AgeList.forEach { print("\($0.name) is \($0.age) years old") }
+
+// *   getTopStudents(students: [Student], top: Int) -> [(name: String, averageGrade: Double)]: Функция должна принимать массив студентов и количество "top", и возвращать массив кортежей (name: String, averageGrade: Double), содержащий информацию о "top" лучших студентах по среднему баллу.  Используйте функции высшего порядка map, filter, sorted и prefix. Если для каких-то студентов не удалось вычислить средний балл (отсутствуют оценки) - их учитывать не нужно.
+
+func getTopStudents(students: [Student], top: Int) -> [(name: String, averageGrade: Double)] {
+    let topStudent = students.sorted { calculateAverageGrade(student: $0) ?? 0 > calculateAverageGrade(student: $1) ?? 0 }.prefix(top)
+    return topStudent.compactMap {
+        guard let averageGrade = calculateAverageGrade(student: $0) else { return nil }
+        return (name: $0.name, averageGrade: averageGrade)
+    }
+}
+
+// MARK: -Test
+let topStudents = getTopStudents(students: studentList, top: 3)
+print("\nTop 3 students by average grade:")
+topStudents.forEach { print("\($0.name) - average grade: \($0.averageGrade)") }
