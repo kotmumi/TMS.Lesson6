@@ -84,8 +84,8 @@ print("Total count students: \(studentList.count) \n")
 studentList.forEach() {
     print("Name: \($0.name)")
     print("Age: \($0.age)")
-    print ("Grades: \($0.grades)")
-    print ("OptionalSubject: \($0.optionalSubjects)\n")
+    print("Grades: \($0.grades)")
+    print("OptionalSubject: \($0.optionalSubjects)\n")
 }
 
 // MARK: -3.  Реализовать функции для обработки данных:
