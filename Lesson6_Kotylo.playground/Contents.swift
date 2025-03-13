@@ -54,7 +54,6 @@ func randomGrades() -> [String: Double] {
     for index in 0...Int.random(in: 0...6) {
         let randomGrade = Double(Int.random(in: 0...10)) / 2.0
         grades[Subjects.allCases.randomElement()!.rawValue] = randomGrade == 0.0 ? nil : randomGrade
-        
     }
     return grades
 }
@@ -122,6 +121,7 @@ student22AgeList.forEach { print("\($0.name) is \($0.age) years old") }
 
 func getTopStudents(students: [Student], top: Int) -> [(name: String, averageGrade: Double)] {
     let topStudent = students.sorted { calculateAverageGrade(student: $0) ?? 0 > calculateAverageGrade(student: $1) ?? 0 }.prefix(top)
+                        
     return topStudent.compactMap {
         guard let averageGrade = calculateAverageGrade(student: $0) else {
             return nil
@@ -162,16 +162,13 @@ func getStudentMaxCountOptSubjects(students: [Student]) -> [Student?] {
     }
     
     if let studentMaxOptSubject = students.max(by: { $0.optionalSubjects.count < $1.optionalSubjects.count }) {
-        let maxCountOptSubjects = studentMaxOptSubject.optionalSubjects.count
-        return students.filter({$0.optionalSubjects.count == maxCountOptSubjects})
-    } else {
-        return [nil]
+         students.filter({$0.optionalSubjects.count == studentMaxOptSubject.optionalSubjects.count})
     }
+        return [nil]
 }
 
 // MARK: -Test
 
 print("\nStudent with max count optional subjects:")
 let studentMaxCountOptSubjects = getStudentMaxCountOptSubjects(students: studentList)
-studentMaxCountOptSubjects.forEach {
-    print("\($0?.name ?? "") \($0?.optionalSubjects.count ?? 0) optional subject") }
+studentMaxCountOptSubjects.forEach { print("\($0?.name ?? "") \($0?.optionalSubjects.count ?? 0) optional subject") }
