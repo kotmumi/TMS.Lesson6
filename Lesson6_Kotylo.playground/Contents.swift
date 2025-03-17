@@ -120,14 +120,9 @@ student22AgeList.forEach { print("\($0.name) is \($0.age) years old") }
 // *   getTopStudents(students: [Student], top: Int) -> [(name: String, averageGrade: Double)]: Функция должна принимать массив студентов и количество "top", и возвращать массив кортежей (name: String, averageGrade: Double), содержащий информацию о "top" лучших студентах по среднему баллу.  Используйте функции высшего порядка map, filter, sorted и prefix. Если для каких-то студентов не удалось вычислить средний балл (отсутствуют оценки) - их учитывать не нужно.
 
 func getTopStudents(students: [Student], top: Int) -> [(name: String, averageGrade: Double)] {
-    let topStudent = students.sorted { calculateAverageGrade(student: $0) ?? 0 > calculateAverageGrade(student: $1) ?? 0 }.prefix(top)
-                        
-    return topStudent.compactMap {
-        guard let averageGrade = calculateAverageGrade(student: $0) else {
-            return nil
-        }
-        return (name: $0.name, averageGrade: averageGrade)
-    }
+   Array(students.map { (name: $0.name, averageGrade: calculateAverageGrade(student: $0) ?? 0) }
+            .sorted { $0.averageGrade > $1.averageGrade }
+            .prefix(top))
 }
 
 // MARK: -Test
